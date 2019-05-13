@@ -33,11 +33,6 @@ RUN dos2unix /tmp/* \
  && mv /tmp/mapred-site.xml $HADOOP_PREFIX/etc/hadoop/mapred-site.xml \
  && mv /tmp/yarn-site.xml $HADOOP_PREFIX/etc/hadoop/yarn-site.xml \
  && mkdir /nn-scripts \
- && mv /tmp/format-and-run.sh /nn-scripts/format-and-run.sh \
- && rm $HADOOP_PREFIX/share/hadoop/hdfs/webapps/hdfs/WEB-INF/web.xml \
- && mv /tmp/web.xml $HADOOP_PREFIX/share/hadoop/hdfs/webapps/hdfs/WEB-INF/web.xml \
- && mv /tmp/jetty-web.xml $HADOOP_PREFIX/share/hadoop/hdfs/webapps/hdfs/WEB-INF/jetty-web.xml \
- && mkdir -p $HADOOP_PREFIX/jetty/etc \
- && mv /tmp/realm.properties $HADOOP_PREFIX/jetty/etc/realm.properties
-
+ && mv /tmp/format-and-run.sh /nn-scripts/format-and-run.sh 
+ 
 ENTRYPOINT ["/entrypoint.sh"]
