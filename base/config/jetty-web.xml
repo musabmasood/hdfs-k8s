@@ -1,0 +1,12 @@
+<Configure class="org.mortbay.jetty.webapp.WebAppContext">
+  <Get name="securityHandler">
+    <Set name="userRealm">
+      <New class="org.mortbay.jetty.security.HashUserRealm">
+        <Set name="name">hadoopuiRealm</Set>
+        <Set name="config">
+          <SystemProperty name="hadoop.home.dir"/>/jetty/etc/realm.properties
+        </Set>
+      </New>
+    </Set>
+  </Get>
+</Configure>

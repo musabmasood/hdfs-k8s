@@ -1,0 +1,124 @@
+version: "3"
+services:
+
+  namenode-0:
+   image: gcr.io/byond-infinity-platform/integrity-hdfs-namenode:2.9.2
+   environment:
+     CLUSTER_NAME: "hdfs-k8s"
+     MY_POD: namenode-0
+     NAMENODE_POD_0: namenode-0
+     NAMENODE_POD_1: namenode-1
+   hostname: namenode-0
+   restart: always
+   command: /entrypoint.sh /nn-scripts/format-and-run.sh
+   networks:
+    - hadoop
+   ports:
+    - 5090:50090
+    - 5070:50070
+    - 5075:50075
+    - 8088:8088
+    - 8020:8020
+   depends_on:
+    - journalnode-0
+    - journalnode-1
+    - journalnode-2
+
+  namenode-1:
+   image: gcr.io/byond-infinity-platform/integrity-hdfs-namenode:2.9.2
+   environment:
+     CLUSTER_NAME: "hdfs-k8s"
+     MY_POD: namenode-1
+     NAMENODE_POD_0: namenode-0
+     NAMENODE_POD_1: namenode-1
+   hostname: namenode-1
+   restart: always
+   command: /entrypoint.sh /nn-scripts/format-and-run.sh
+   networks:
+    - hadoop
+   ports:
+    - 5190:50090
+    - 5170:50070
+    - 5175:50075
+    - 8188:8088
+    - 8120:8020
+   depends_on:
+    - namenode-0
+
+  datanode-0:
+   image: gcr.io/byond-infinity-platform/integrity-hdfs-datanode:2.9.2
+   hostname: datanode-0
+   restart: always
+   networks:
+    - hadoop
+   ports:
+    - 5091:50090
+    - 8089:8088
+    - 5076:50075
+   depends_on:
+    - namenode-1 
+
+  zookeeper-0:
+   image: gcr.io/google_samples/k8szk:v3
+   hostname: zookeeper-0
+   command: sh -c "zkGenConfig.sh && zkServer.sh start-foreground"
+   ports:
+    - 2181:2181
+   restart: always
+   networks:
+    - hadoop
+   environment:
+    ZK_REPLICAS: 3
+    
+  zookeeper-1:
+   image: gcr.io/google_samples/k8szk:v3
+   hostname: zookeeper-1
+   command: sh -c "zkGenConfig.sh && zkServer.sh start-foreground"
+   ports:
+    - 2182:2181
+   restart: always
+   networks:
+    - hadoop
+   environment:
+    ZK_REPLICAS: 3
+    
+  zookeeper-2:
+   image: gcr.io/google_samples/k8szk:v3
+   hostname: zookeeper-2
+   command: sh -c "zkGenConfig.sh && zkServer.sh start-foreground"
+   ports:
+    - 2183:2181
+   environment:
+     ZK_REPLICAS: 3
+   restart: always
+   networks:
+    - hadoop
+   environment:
+    ZK_REPLICAS: 3
+  
+  journalnode-0:
+   image: gcr.io/byond-infinity-platform/integrity-hdfs:2.9.2
+   hostname: journalnode-0
+   restart: always
+   networks:
+    - hadoop
+   command: /entrypoint.sh /opt/hadoop-2.9.2/bin/hdfs --config /etc/hadoop journalnode
+   
+  journalnode-1:
+   image: gcr.io/byond-infinity-platform/integrity-hdfs:2.9.2
+   hostname: journalnode-1
+   restart: always
+   networks:
+    - hadoop
+   command: /entrypoint.sh /opt/hadoop-2.9.2/bin/hdfs --config /etc/hadoop journalnode
+
+  journalnode-2:
+   image: gcr.io/byond-infinity-platform/integrity-hdfs:2.9.2
+   hostname: journalnode-2
+   restart: always
+   networks:
+    - hadoop
+   command: /entrypoint.sh /opt/hadoop-2.9.2/bin/hdfs --config /etc/hadoop journalnode 
+  
+networks:
+  hadoop:

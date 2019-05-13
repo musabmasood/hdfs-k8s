@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+  <property>
+    <name>fs.defaultFS</name>
+    <value>hdfs://hdfs-k8s</value>
+  </property>
+  <property>
+    <name>ha.zookeeper.quorum</name>
+    <value>zookeeper-1:2181,zookeeper-2:2181,zookeeper-0:2181</value>
+  </property>
+  <property>
+  <name>hadoop.http.authentication.standard.config.path</name>
+  <value>/home/hadoop/hadoop-2.9.2/auth.conf</value>
+  </property>
+</configuration>
