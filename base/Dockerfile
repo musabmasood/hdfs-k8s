@@ -28,9 +28,9 @@ ARG CONFIG_DIR=config
 COPY $CONFIG_DIR/* /tmp/
 
 RUN dos2unix /tmp/* \
- && mv /tmp/hdfs-site.xml $HADOOP_HOME/etc/hadoop/hdfs-site.xml \
- && mv /tmp/core-site.xml $HADOOP_HOME/etc/hadoop/core-site.xml \
- && mv /tmp/mapred-site.xml $HADOOP_HOME/etc/hadoop/mapred-site.xml \
- && mv /tmp/yarn-site.xml $HADOOP_HOME/etc/hadoop/yarn-site.xml
+ && mv /tmp/hdfs-site.xml $HADOOP_PREFIX/etc/hadoop/hdfs-site.xml \
+ && mv /tmp/core-site.xml $HADOOP_PREFIX/etc/hadoop/core-site.xml \
+ && mv /tmp/mapred-site.xml $HADOOP_PREFIX/etc/hadoop/mapred-site.xml \
+ && mv /tmp/yarn-site.xml $HADOOP_PREFIX/etc/hadoop/yarn-site.xml 
 
 ENTRYPOINT ["/entrypoint.sh"]
