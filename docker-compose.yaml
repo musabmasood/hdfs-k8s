@@ -119,6 +119,20 @@ services:
    networks:
     - hadoop
    command: /entrypoint.sh /opt/hadoop-2.9.2/bin/hdfs --config /etc/hadoop journalnode 
+   
+  # minio:
+   # image: minio/minio
+   # ports:
+    # - 9000:9000
+   # restart: always
+   # environment:
+     # MINIO_ACCESS_KEY: "minio"
+     # MINIO_SECRET_KEY: "minio123"
+   # command: tail -f /dev/null
+   # networks:
+    # - hadoop
+   # depends_on:
+    # - namenode-0 
   
 networks:
   hadoop:
