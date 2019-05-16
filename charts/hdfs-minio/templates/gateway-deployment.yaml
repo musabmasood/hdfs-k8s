@@ -43,9 +43,15 @@ spec:
           imagePullPolicy: Always
           env:
             - name: MINIO_ACCESS_KEY
-              value: {{ .Values.credentials.user }}
+              valueFrom:
+                secretKeyRef:
+                  name: minio-secret
+                  key: accesskey
             - name: MINIO_SECRET_KEY
-              value: {{ .Values.credentials.password }}
+              valueFrom:
+                secretKeyRef:
+                  name: minio-secret
+                  key: secretkey
             - name: HADOOP_CUSTOM_CONF_DIR
               value: /etc/hadoop-custom-conf
             - name: MULTIHOMED_NETWORK
@@ -76,6 +82,9 @@ spec:
           configMap:
             name: minio-scripts
             defaultMode: 0744
+        - name: minio-secret
+          secret:
+            secretName: minio-secret
 
 
 ---
