@@ -12,8 +12,6 @@ See [tests/README.md](tests/README.md) for how to run integration tests for
 HDFS on Kubernetes.
 
 #TODO
-- Template image names 
-- Add bom.yaml
-- Test in on-prem
+
 - Write Helm Test
 - Template hdfs client (Optional)

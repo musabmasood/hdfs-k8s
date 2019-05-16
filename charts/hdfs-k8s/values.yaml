@@ -182,11 +182,8 @@ hdfs-gateway:
   image:
     repository: gcr.io/byond-infinity-platform/minio-gateway
     tag: "1.0"
-  credentials:
-    # Access key length should be between minimum 3 characters in length.
-    #  Secret key should be in between 8 and 40 characters.
-    user: admin
-    password: adminpass
+  accessKey: "admin"
+  secretKey: "admin123"
   resources: 
   # If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
