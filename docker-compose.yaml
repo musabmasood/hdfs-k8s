@@ -2,7 +2,7 @@ version: "3"
 services:
 
   namenode-0:
-   image: gcr.io/byond-infinity-platform/integrity-hdfs-namenode:2.9.2
+   image: gcr.io/byond-infinity-platform/integrity-hdfs-namenode:2.9.2-ha
    environment:
      CLUSTER_NAME: "hdfs-k8s"
      MY_POD: namenode-0
@@ -25,7 +25,7 @@ services:
     - journalnode-2
 
   namenode-1:
-   image: gcr.io/byond-infinity-platform/integrity-hdfs-namenode:2.9.2
+   image: gcr.io/byond-infinity-platform/integrity-hdfs-namenode:2.9.2-ha
    environment:
      CLUSTER_NAME: "hdfs-k8s"
      MY_POD: namenode-1
@@ -46,7 +46,7 @@ services:
     - namenode-0
 
   datanode-0:
-   image: gcr.io/byond-infinity-platform/integrity-hdfs-datanode:2.9.2
+   image: gcr.io/byond-infinity-platform/integrity-hdfs-datanode:2.9.2-ha
    hostname: datanode-0
    restart: always
    networks:
