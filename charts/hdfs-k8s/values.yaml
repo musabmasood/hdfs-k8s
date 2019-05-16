@@ -27,7 +27,7 @@ hdfs-config-k8s:
       # hadoop.http.authentication.type: kerberos
      hdfsSite:
        dfs.permissions.enabled: false
-       # dfs.webhdfs.enabled: true
+       dfs.webhdfs.enabled: false
 
 ## ------------------------------------------------------------------------------
 ## hdfs-journalnode-k8s:
@@ -175,6 +175,29 @@ hdfs-datanode-k8s:
      # cpu: 2
      # memory: 2G
 
+## ------------------------------------------------------------------------------
+## hdfs-gateway:
+## ------------------------------------------------------------------------------
+hdfs-gateway:
+  image:
+    repository: gcr.io/byond-infinity-platform/minio-gateway
+    tag: "1.0"
+  credentials:
+    # Access key length should be between minimum 3 characters in length.
+    #  Secret key should be in between 8 and 40 characters.
+    user: admin
+    password: adminpass
+  resources: 
+  # If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # if you want un bound resources then add the curly brace after resources like 'resources: {}' 
+  # and uncomment everything below 
+    limits:
+     cpu: 1
+     memory: 1G
+    requests:
+     cpu: .5
+     memory: 512M
 ## ------------------------------------------------------------------------------
 ## hdfs-krb5-k8s:
 ## ------------------------------------------------------------------------------

@@ -1,0 +1,107 @@
+# A headless service to create DNS records.
+apiVersion: v1
+kind: Service
+metadata:
+  name: minio-gateway
+  labels:
+    app: minio-gateway
+    chart: {{ template "hdfs-k8s.subchart" . }}
+    release: {{ .Release.Name }}
+spec:
+  ports:
+  - port: 9000
+    name: http
+  clusterIP: None
+  selector:
+    app: minio-gateway
+    release: {{ .Release.Name }}
+---
+apiVersion: apps/v1
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: minio-gateway
+  labels:
+    app: minio-gateway
+    chart: {{ template "hdfs-k8s.subchart" . }}
+    release: {{ .Release.Name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minio-gateway
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: minio-gateway
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: hdfs-minio-gateway
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: Always
+          env:
+            - name: MINIO_ACCESS_KEY
+              value: {{ .Values.credentials.user }}
+            - name: MINIO_SECRET_KEY
+              value: {{ .Values.credentials.password }}
+            - name: HADOOP_CUSTOM_CONF_DIR
+              value: /etc/hadoop-custom-conf
+            - name: MULTIHOMED_NETWORK
+              value: "0"
+            - name: CURRENT_ACTIVE
+              value: "nn0"
+          command: ['/bin/sh', '-c','/minio-scripts/start-gateway.sh' ]
+          livenessProbe:
+            exec:
+              command: ["/bin/sh","-c", ps -ef | grep "minio gateway"| grep -v -e "grep" | cut -d " " -f 34 | sed 's/$/\//'| xargs hdfs dfs -ls ]
+            initialDelaySeconds: 30
+            periodSeconds: 5
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+          volumeMounts:
+            - name: hdfs-config
+              mountPath: /etc/hadoop
+              readOnly: true
+            - name: minio-scripts
+              mountPath: /minio-scripts
+              readOnly: true
+      restartPolicy: Always
+      volumes:
+        - name: hdfs-config
+          configMap:
+            name: {{ template "hdfs-k8s.config.fullname" . }}
+        - name: minio-scripts
+          configMap:
+            name: minio-scripts
+            defaultMode: 0744
+
+
+---
+# Provides namenode helper scripts. Most of them are start scripts
+# that meet different needs.
+# TODO: Support upgrade of metadata in case a new Hadoop version requires it.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: minio-scripts
+  labels:
+    app: minio-gateway
+    chart: {{ template "hdfs-k8s.subchart" . }}
+    release: {{ .Release.Name }}
+data:
+  start-gateway.sh: |
+    #!/usr/bin/env bash
+    if hdfs haadmin -getServiceState nn0 | grep -q active ; then
+      echo nn0
+      minio gateway hdfs hdfs://{{ template "namenode-svc-0" . }}:8020
+    elif hdfs haadmin -getServiceState nn1 | grep -q active ; then
+      echo nn1
+      minio gateway hdfs hdfs://{{ template "namenode-svc-1" . }}:8020
+    else
+      echo no active found
+      exit 1
+    fi
+    
+

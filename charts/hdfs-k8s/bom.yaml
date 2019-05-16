@@ -5,3 +5,4 @@
   - hdfs-namenode-k8s.image.repository:hdfs-namenode-k8s.image.tag
   - hdfs-client-k8s.image.repository:hdfs-client-k8s.image.tag
   - hdfs-datanode-k8s.image.repository:hdfs-datanode-k8s.image.tag
+  - hdfs-gateway.image.repository:hdfs-gateway.image.tag

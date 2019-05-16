@@ -1,6 +1,6 @@
 dependencies:
   - name: zookeeper
-    version: "1.0.0" #NORETAG_HINT
+    version: "1.0.0"
     repository: https://kubernetes-charts-incubator.storage.googleapis.com/
     condition: condition.subchart.zookeeper
     tags:
@@ -57,3 +57,9 @@ dependencies:
       - ha
       - kerberos
       - simple
+  - name: hdfs-gateway
+    version: "0.1.0"
+    repository: "file://../hdfs-minio"
+    condition: condition.subchart.minio
+    tags:
+      - ha
