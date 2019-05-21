@@ -1,4 +1,4 @@
-FROM minio/minio:latest
+FROM minio/minio:RELEASE.2019-05-14T23-57-45Z
 
 RUN apk update && apk upgrade 
 RUN apk add net-tools curl procps dos2unix openjdk8 bash 
