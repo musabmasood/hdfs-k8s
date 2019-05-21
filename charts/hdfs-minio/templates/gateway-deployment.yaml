@@ -1,3 +1,4 @@
+{{- if .Values.enabled }}
 # A headless service to create DNS records.
 apiVersion: v1
 kind: Service
@@ -15,7 +16,9 @@ spec:
   selector:
     app: minio-gateway
     release: {{ .Release.Name }}
+{{- end }}
 ---
+{{- if .Values.enabled }}
 apiVersion: apps/v1
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -85,9 +88,9 @@ spec:
         - name: minio-secret
           secret:
             secretName: minio-secret
-
-
+{{- end }}
 ---
+{{- if .Values.enabled }}
 # Provides namenode helper scripts. Most of them are start scripts
 # that meet different needs.
 # TODO: Support upgrade of metadata in case a new Hadoop version requires it.
@@ -112,5 +115,6 @@ data:
       echo no active found
       exit 1
     fi
+{{- end }}
     
 

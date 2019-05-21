@@ -179,6 +179,7 @@ hdfs-datanode-k8s:
 ## hdfs-gateway:
 ## ------------------------------------------------------------------------------
 hdfs-gateway:
+  enabled: true
   image:
     repository: gcr.io/byond-infinity-platform/minio-gateway
     tag: "1.0"
