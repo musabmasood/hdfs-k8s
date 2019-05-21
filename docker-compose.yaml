@@ -1,0 +1,33 @@
+version: "3"
+services:
+
+  integrity-hadoop-master:
+   image: gcr.io/byond-infinity-platform/integrity-hdfs-namenode:2.9.2
+   hostname: "integrity-hadoop-master"
+   environment:
+     CLUSTER_NAME: "integrity-hadoop-master"
+   networks:
+    - integrity
+   depends_on:
+    - integrity-hadoop-slave
+   ports:
+    - 5090:50090
+    - 5070:50070
+    - 5075:50075
+    - 8088:8088
+    - 8020:8020
+
+  integrity-hadoop-slave:
+   image: gcr.io/byond-infinity-platform/integrity-hdfs-datanode:2.9.2
+   environment:
+     CORE_CONF_fs_defaultFS: "hdfs://integrity-hadoop-master"
+   networks:
+    - integrity
+   ports:
+    - 5091:50090
+    - 8089:8088
+    - 5076:50075
+   hostname: integrity-hadoop-slave
+
+networks:
+  integrity:
