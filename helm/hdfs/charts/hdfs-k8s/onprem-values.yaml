@@ -1,8 +1,8 @@
+
 hdfs-client-k8s:
   image:
     repository: docker.registry:5000/gcr.io/byond-infinity-platform/integrity-hdfs
     tag: 2.9.2
-hdfs-datanode-k8s:
 hdfs-datanode-k8s:     
   javaResources:
     #xms and xmx in mb
@@ -48,7 +48,6 @@ hdfs-gateway:
   image:
     repository: docker.registry:5000/gcr.io/byond-infinity-platform/minio-gateway
     tag: 1.0
-
 global:
 # Where on the local FS where hdfs data will be stored
   dataNodeHostPath:
