@@ -1,0 +1,7 @@
+ imagesFromChartValues:
+  - zookeeper.image.repository:zookeeper.image.tag
+  - hdfs-journalnode-k8s.image.repository:hdfs-journalnode-k8s.image.tag
+  - hdfs-journalnode-k8s.initContainers.repository:hdfs-journalnode-k8s.initContainers.tag
+  - hdfs-namenode-k8s.image.repository:hdfs-namenode-k8s.image.tag
+  - hdfs-client-k8s.image.repository:hdfs-client-k8s.image.tag
+  - hdfs-datanode-k8s.image.repository:hdfs-datanode-k8s.image.tag

@@ -1,0 +1,32 @@
+hdfs-datanode-k8s:     
+  javaResources:
+    #xms and xmx in mb
+    xms: 128
+    xmx: 5120
+  resources:
+    limits:
+     #cpu: 2
+     memory: 6G
+    requests:
+     # cpu: 2
+     memory: 6G
+
+hdfs-namenode-k8s:
+  javaResources:
+    #xms and xmx in mb
+    xms: 128
+    xmx: 3096
+  resources: 
+    limits:
+    # cpu: 2
+     memory: 4G
+    requests:
+    # cpu: 2
+     memory: 4G
+
+global:
+# Where on the local FS where hdfs data will be stored
+  dataNodeHostPath:
+    - /hadoop-data
+
+     

@@ -1,0 +1,30 @@
+hdfs-datanode-k8s:     
+  javaResources:
+    #xms and xmx in mb
+    xms: 128
+    xmx: 2048
+  resources:
+    limits:
+     #cpu: 2
+     memory: 2G
+    requests:
+     # cpu: 2
+     memory: 2G
+
+hdfs-namenode-k8s:
+  javaResources:
+    #xms and xmx in mb
+    xms: 128
+    xmx: 1610
+  resources: 
+    limits:
+    # cpu: 2
+     memory: 2G
+    requests:
+    # cpu: 2
+     memory: 2G
+
+global:
+# Where on the local FS where hdfs data will be stored
+  dataNodeHostPath:
+    - /devtest/tcc/integrity/hadoop-data
