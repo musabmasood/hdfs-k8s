@@ -99,9 +99,8 @@ spec:
             {{- end }}
           livenessProbe:
             exec:
-              command:
-                - /dn-scripts/check-status.sh
-            initialDelaySeconds: 60
+              command: ["/bin/sh","-c", "/dn-scripts/check-status.sh && hdfs dfsadmin -report | grep $(hostname -i)"]
+            initialDelaySeconds: 180
             periodSeconds: 30
           readinessProbe:
             exec:

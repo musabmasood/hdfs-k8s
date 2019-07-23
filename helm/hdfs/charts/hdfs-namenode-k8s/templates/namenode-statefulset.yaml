@@ -220,6 +220,16 @@ spec:
             name: fs
           - containerPort: 50070
             name: http
+          livenessProbe:
+            exec:
+              command: ["/bin/sh","-c", "hdfs haadmin -getAllServiceState | grep active"]
+            initialDelaySeconds: 120
+            periodSeconds: 30
+          readinessProbe:
+            exec:
+              command: ["/bin/sh","-c", "curl $(hostname -i):50070" ]
+            initialDelaySeconds: 60
+            periodSeconds: 30
           resources:
 {{ toYaml .Values.resources | indent 12 }}
           volumeMounts:
