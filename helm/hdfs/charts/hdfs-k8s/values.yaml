@@ -7,7 +7,7 @@ zookeeper:
     tag: v3
   ## Configure Zookeeper resource requests and limits
   ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
-  resources: ~
+  resources: {}
 
   ## The JVM heap size to allocate to Zookeeper
   env:

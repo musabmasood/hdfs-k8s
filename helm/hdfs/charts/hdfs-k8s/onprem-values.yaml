@@ -10,10 +10,10 @@ hdfs-datanode-k8s:
     xmx: 5120
   resources:
     limits:
-     #cpu: 2
+     cpu: 1
      memory: 6G
     requests:
-     # cpu: 2
+     cpu: 500m
      memory: 6G
   image:
     repository: docker.registry:5000/gcr.io/byond-infinity-platform/integrity-hdfs-datanode
@@ -25,6 +25,13 @@ hdfs-journalnode-k8s:
   initContainers:
     repository: docker.registry:5000/busybox
     tag: 1.27.1
+  resources:
+    limits:
+     cpu: 1
+     memory: 1Gi
+    requests:
+     cpu: 500m
+     memory: 600Mi
 hdfs-namenode-k8s:
   javaResources:
     #xms and xmx in mb
@@ -32,10 +39,10 @@ hdfs-namenode-k8s:
     xmx: 3096
   resources: 
     limits:
-    # cpu: 2
+     cpu: 1
      memory: 4G
     requests:
-    # cpu: 2
+     cpu: 500m
      memory: 4G
   image:
     repository: docker.registry:5000/gcr.io/byond-infinity-platform/integrity-hdfs-namenode
@@ -44,6 +51,13 @@ zookeeper:
   image:
     repository: docker.registry:5000/gcr.io/google_samples/k8szk
     tag: v3
+  resources:
+    limits:
+     cpu: 1
+     memory: 4Gi
+    requests:
+     cpu: 500m
+     memory: 2Gi
 hdfs-gateway:
   image:
     repository: docker.registry:5000/gcr.io/byond-infinity-platform/minio-gateway
