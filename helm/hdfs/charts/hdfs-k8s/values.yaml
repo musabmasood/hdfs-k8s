@@ -68,7 +68,7 @@ hdfs-journalnode-k8s:
 hdfs-namenode-k8s:
   image:
     repository: gcr.io/byond-infinity-platform/integrity-hdfs-namenode
-    tag: "2.9.2"
+    tag: "2.9.2-fix.4"
   ## Name of the namenode start script in the config map.
   namenodeStartScript: format-and-run.sh
 
