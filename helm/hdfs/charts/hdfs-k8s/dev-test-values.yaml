@@ -1,50 +1,30 @@
-
-hdfs-client-k8s:
-  image:
-    repository: docker.registry:5000/gcr.io/byond-infinity-platform/integrity-hdfs
-    tag: 2.9.2
-hdfs-datanode-k8s:     
+hdfs-datanode-k8s:
   javaResources:
     #xms and xmx in mb
     xms: 128
     xmx: 2048
   resources:
     limits:
-     #cpu: 2
-     memory: 2G
+      #cpu: 2
+      memory: 2G
     requests:
-     # cpu: 2
-     memory: 2G
-  image:
-    repository: docker.registry:5000/gcr.io/byond-infinity-platform/integrity-hdfs-datanode
-    tag: 2.9.2
-hdfs-journalnode-k8s:
-  image:
-    repository: docker.registry:5000/gcr.io/byond-infinity-platform/integrity-hdfs-namenode
-    tag: 2.9.2
-  initContainers:
-    repository: docker.registry:5000/busybox
-    tag: 1.27.1
+      # cpu: 2
+      memory: 2G
+
 hdfs-namenode-k8s:
   javaResources:
     #xms and xmx in mb
     xms: 128
     xmx: 1610
-  resources: 
+  resources:
     limits:
-    # cpu: 2
-     memory: 2G
+      # cpu: 2
+      memory: 2G
     requests:
-    # cpu: 2
-     memory: 2G
-  image:
-    repository: docker.registry:5000/gcr.io/byond-infinity-platform/integrity-hdfs-namenode
-    tag: 2.9.2
-zookeeper:
-  image:
-    repository: docker.registry:5000/gcr.io/google_samples/k8szk
-    tag: v3
+      # cpu: 2
+      memory: 2G
+
 global:
-# Where on the local FS where hdfs data will be stored
+  # Where on the local FS where hdfs data will be stored
   dataNodeHostPath:
     - /devtest/tcc/integrity/hadoop-data

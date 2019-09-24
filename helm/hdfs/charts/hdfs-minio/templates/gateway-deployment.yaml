@@ -40,10 +40,23 @@ spec:
         app: minio-gateway
         release: {{ .Release.Name }}
     spec:
+      initContainers:
+        - name: wait-for-namenode
+          image: {{ .Values.initContainers.repository }}:{{ .Values.initContainers.tag }}
+          command:
+            - 'sh'
+            - '-c'
+            - >
+              until nc -z -w 2 {{ template "hdfs-k8s.namenode.fullname" . }}-active 8020 && echo namenode ok; do
+                sleep 2;
+              done;
       containers:
         - name: hdfs-minio-gateway
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           imagePullPolicy: Always
+          ports:
+            - name: service
+              containerPort: 9000
           env:
             - name: MINIO_ACCESS_KEY
               valueFrom:
@@ -63,10 +76,24 @@ spec:
               value: "nn0"
           command: ['/bin/sh', '-c','/minio-scripts/start-gateway.sh' ]
           livenessProbe:
-            exec:
-              command: ["/bin/sh","-c", ps -ef | grep "minio gateway"| grep -v -e "grep" | cut -d " " -f 34 | sed 's/$/\//'| xargs hdfs dfs -ls ]
-            initialDelaySeconds: 30
-            periodSeconds: 5
+            httpGet:
+              path: /minio/health/live
+              port: service
+              scheme: HTTP              
+            initialDelaySeconds: 5
+            periodSeconds: 30
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /minio/health/ready
+              port: service
+            initialDelaySeconds: 5
+            periodSeconds: 15
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 3
           resources:
 {{ toYaml .Values.resources | indent 12 }}
           volumeMounts:
@@ -105,16 +132,5 @@ metadata:
 data:
   start-gateway.sh: |
     #!/usr/bin/env bash
-    if hdfs haadmin -getServiceState nn0 | grep -q active ; then
-      echo nn0
-      minio gateway hdfs hdfs://{{ template "namenode-svc-0" . }}:8020
-    elif hdfs haadmin -getServiceState nn1 | grep -q active ; then
-      echo nn1
-      minio gateway hdfs hdfs://{{ template "namenode-svc-1" . }}:8020
-    else
-      echo no active found
-      exit 1
-    fi
+    minio gateway hdfs hdfs://{{ template "hdfs-k8s.namenode.fullname" . }}-active:8020
 {{- end }}
-    
-

@@ -2,7 +2,7 @@ zookeeper:
   image:
     repository: docker.registry:5000/k8szk
     tag: v3
-    
+
 hdfs-journalnode-k8s:
   image:
     repository: docker.registry:5000/integrity-hdfs-namenode
@@ -10,12 +10,12 @@ hdfs-journalnode-k8s:
   initContainers:
     repository: busybox
     tag: "1.27.1"
-    
+
 hdfs-namenode-k8s:
   image:
     repository: docker.registry:5000/integrity-hdfs-namenode
     tag: "latest"
-    
+
 hdfs-datanode-k8s:
   image:
     repository: docker.registry:5000/integrity-hdfs-datanode

@@ -18,7 +18,7 @@ spec:
   selector:
     app: {{ template "hdfs-k8s.namenode.name" . }}
     release: {{ .Release.Name }}
-    active: "true"
+    status: active
 ---
 # A headless service to create DNS records.
 apiVersion: v1
@@ -235,9 +235,9 @@ spec:
               command: 
                 - /bin/sh
                 - -ce
-                - curl $(hostname -i):50070 && hdfs haadmin -getAllServiceState | grep $MY_POD | awk '{print $2}' | grep 'active\|standby' | xargs -I {} kubectl label pod --overwrite $MY_POD status={}
+                - curl $(hostname -i):50070 && hdfs haadmin -getAllServiceState | grep $MY_POD | awk '{print $2}' | grep -E '^(active|standby)$' | xargs -I {} kubectl label pod --overwrite $MY_POD status={}
             initialDelaySeconds: 60
-            periodSeconds: 30
+            periodSeconds: 10
           resources:
 {{ toYaml .Values.resources | indent 12 }}
           volumeMounts:
