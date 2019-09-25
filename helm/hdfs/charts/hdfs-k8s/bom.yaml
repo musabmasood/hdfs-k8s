@@ -7,4 +7,3 @@ imagesFromChartValues:
   - hdfs-datanode-k8s.image.repository:hdfs-datanode-k8s.image.tag
   - hdfs-gateway.image.repository:hdfs-gateway.image.tag
   - hdfs-gateway.initContainers.repository:hdfs-gateway.initContainers.tag
-

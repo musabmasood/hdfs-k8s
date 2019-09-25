@@ -203,7 +203,7 @@ spec:
             - name: MULTIHOMED_NETWORK
               value: "0"
             - name: JAVA_OPTS
-              value: "-Xms{{ .Values.javaResources.xms }}m -Xmx{{ .Values.javaResources.xmx }}m" 
+              value: "-Xms{{ .Values.javaResources.xms }}m -Xmx{{ .Values.javaResources.xmx }}m"
             # Used by the start script below.
             - name: MY_POD
               valueFrom:
@@ -224,7 +224,7 @@ spec:
             name: http
           livenessProbe:
             exec:
-              command: 
+              command:
                - /bin/sh
                - -c
                - hdfs haadmin -getAllServiceState | grep active
@@ -232,7 +232,7 @@ spec:
             periodSeconds: 30
           readinessProbe:
             exec:
-              command: 
+              command:
                 - /bin/sh
                 - -ce
                 - curl $(hostname -i):50070 && hdfs haadmin -getAllServiceState | grep $MY_POD | awk '{print $2}' | grep -E '^(active|standby)$' | xargs -I {} kubectl label pod --overwrite $MY_POD status={}
