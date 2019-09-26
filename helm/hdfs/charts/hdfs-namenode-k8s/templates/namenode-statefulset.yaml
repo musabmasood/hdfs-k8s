@@ -235,9 +235,7 @@ spec:
               command:
                 - /bin/sh
                 - -ce
-                - >
-                  curl -G --silent --fail $(hostname -i):50070 && \
-                  hdfs haadmin -getAllServiceState | grep $MY_POD | awk '{print $2}' | grep -E '^(active|standby)$' | xargs -I {} kubectl label pod --overwrite $MY_POD status={}
+                - curl -G --silent --fail $(hostname -i):50070 && hdfs haadmin -getAllServiceState | grep $MY_POD | awk '{print $2}' | grep -E '^(active|standby)$' | xargs -I {} kubectl label pod --overwrite $MY_POD status={}
             initialDelaySeconds: 60
             periodSeconds: 10
           resources:
