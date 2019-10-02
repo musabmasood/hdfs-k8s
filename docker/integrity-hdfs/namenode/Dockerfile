@@ -8,6 +8,9 @@ RUN mkdir -p /hadoop/dfs/name \
 
 VOLUME /hadoop/dfs/name
 
+COPY ./ui/explorer.js /opt/hadoop-$HADOOP_VERSION/share/hadoop/hdfs/webapps/hdfs/explorer.js
+COPY ./ui/explorer.html /opt/hadoop-$HADOOP_VERSION/share/hadoop/hdfs/webapps/hdfs/explorer.html
+
 COPY run.sh /run.sh
 RUN chmod a+x /run.sh
 
