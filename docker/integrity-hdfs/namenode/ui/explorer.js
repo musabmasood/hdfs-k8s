@@ -66,7 +66,6 @@
   }
 
   $(document).ready(function(){
-    // if statement to check user + pass.
     var auth = window.localStorage.getItem("auth");
     if (!auth) {
       document.getElementById("overlay").style.display = "block";
@@ -83,20 +82,36 @@
   })
 
   $(".login-input").keypress(function(event) {
-    if ( event.which == 13 ) {
+    if (event.which == 13) {
       clearLoginErrors();
       authenticate()
     }
   })
 
-  function authenticate(username, password) {
-    var username = $("input[name=hdfs-username]").val();
+  async function authenticate() {
+    var errorMessage = "";
+    var importedUsers = await import('./userList.js');
+    var userList = importedUsers.default;
+    var username = btoa($("input[name=hdfs-username]").val());
     var password = btoa($("input[name=hdfs-password]").val());
+    
     if (!username | !password) {
-      handleLoginError("<p>Please specify username and password.</p>")
+      errorMessage = "<p>Please specify username and password.</p>"
+    } else if (!userList|| !userList.length) {
+      errorMessage = "<p>Incorrect username or password.</p>"
+    }
+    if (errorMessage) {
+      handleLoginError(errorMessage);
     } else {
-      window.localStorage.setItem("auth", password)
-      document.getElementById("overlay").style.display = "none";
+      var givenUser = userList.find(function(user) {
+        return user.username === username && user.password === password;
+      });
+      if (!givenUser) {
+        handleLoginError("<p>Incorrect username or password.</p>");
+      } else {
+        window.localStorage.setItem("auth", givenUser)
+        document.getElementById("overlay").style.display = "none";
+      }
     }
   }
 
