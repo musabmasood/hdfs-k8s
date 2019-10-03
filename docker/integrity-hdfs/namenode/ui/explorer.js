@@ -74,13 +74,41 @@
   })
 
   $("#hdfs-login").click(function() {
+    clearLoginErrors();
+    authenticate();
+  })
+
+  $(".login-input").change(function() {
+    clearLoginErrors();
+  })
+
+  $(".login-input").keypress(function(event) {
+    if ( event.which == 13 ) {
+      clearLoginErrors();
+      authenticate()
+    }
+  })
+
+  function authenticate(username, password) {
     var username = $("input[name=hdfs-username]").val();
     var password = btoa($("input[name=hdfs-password]").val());
-    // Check to make sure if matches, encode and then save to local storage.
+    if (!username | !password) {
+      handleLoginError("<p>Please specify username and password.</p>")
+    } else {
+      window.localStorage.setItem("auth", password)
+      document.getElementById("overlay").style.display = "none";
+    }
+  }
 
-    window.localStorage.setItem("auth", password)
-    document.getElementById("overlay").style.display = "none";
-  })
+  function handleLoginError(msg) {
+    $("#login-error").append(msg)
+    $("#login-error").show();
+  }
+
+  function clearLoginErrors() {
+    $("#login-error").hide();
+    $("#login-error").empty();
+  }
 
   function append_path(prefix, s) {
     var l = prefix.length;
