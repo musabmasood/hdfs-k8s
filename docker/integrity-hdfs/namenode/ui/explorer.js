@@ -65,6 +65,23 @@
     };
   }
 
+  $(document).ready(function(){
+    // if statement to check user + pass.
+    var auth = window.localStorage.getItem("auth");
+    if (!auth) {
+      document.getElementById("overlay").style.display = "block";
+    }
+  })
+
+  $("#hdfs-login").click(function() {
+    var username = $("input[name=hdfs-username]").val();
+    var password = btoa($("input[name=hdfs-password]").val());
+    // Check to make sure if matches, encode and then save to local storage.
+
+    window.localStorage.setItem("auth", password)
+    document.getElementById("overlay").style.display = "none";
+  })
+
   function append_path(prefix, s) {
     var l = prefix.length;
     var p = l > 0 && prefix[l - 1] == '/' ? prefix.substring(0, l - 1) : prefix;
