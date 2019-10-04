@@ -253,6 +253,9 @@ spec:
             - name: hdfs-config
               mountPath: /etc/hadoop-custom-conf
               readOnly: true
+            - name: auth-credentials
+              mountPath: /opt/hadoop-2.9.2/share/hadoop/hdfs/webapps/hdfs/userList.js
+              subPath: userList.js
             {{- if .Values.global.kerberosEnabled }}
             - name: kerberos-config
               mountPath: /etc/krb5.conf
@@ -294,6 +297,9 @@ spec:
         - name: hdfs-config
           configMap:
             name: {{ template "hdfs-k8s.config.fullname" . }}
+        - name: auth-credentials
+          configMap:
+            name: auth-credentials
         {{- if .Values.global.kerberosEnabled }}
         - name: kerberos-config
           configMap:
