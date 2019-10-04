@@ -7,9 +7,11 @@ metadata:
 data:
   userList.js: |-
     var userList = [
+      {{ range $i, $user := .Values.readonlyCredentials -}}
       {
-        username: {{ .Values.readonlyCredentials.username | b64enc | quote }},
-        password: {{ .Values.readonlyCredentials.password | b64enc | quote }}
-      }
+        username: {{ $user.username | b64enc | quote }},
+        password: {{ $user.password | b64enc | quote }}
+      },
+      {{- end }}
     ];
     export default userList;
