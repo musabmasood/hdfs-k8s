@@ -18,6 +18,7 @@ spec:
   selector:
     app: {{ template "hdfs-k8s.namenode.name" . }}
     release: {{ .Release.Name }}
+    status: active
 ---
 # A headless service to create DNS records.
 apiVersion: v1
@@ -152,6 +153,7 @@ spec:
 {{ toYaml .Values.podAnnotations | indent 8 }}
       {{- end }}
     spec:
+      serviceAccountName: {{ .Release.Name }}-pod-labeler
       {{- if .Values.hostNetworkEnabled }}
       # Use hostNetwork so datanodes connect to namenode without going through an overlay network
       # like weave. Otherwise, namenode fails to see physical IP address of datanodes.
@@ -201,7 +203,7 @@ spec:
             - name: MULTIHOMED_NETWORK
               value: "0"
             - name: JAVA_OPTS
-              value: "-Xms{{ .Values.javaResources.xms }}m -Xmx{{ .Values.javaResources.xmx }}m" 
+              value: "-Xms{{ .Values.javaResources.xms }}m -Xmx{{ .Values.javaResources.xmx }}m"
             # Used by the start script below.
             - name: MY_POD
               valueFrom:
@@ -222,14 +224,20 @@ spec:
             name: http
           livenessProbe:
             exec:
-              command: ["/bin/sh","-c", "hdfs haadmin -getAllServiceState | grep active"]
+              command:
+               - /bin/sh
+               - -c
+               - hdfs haadmin -getAllServiceState | grep active
             initialDelaySeconds: 120
             periodSeconds: 30
           readinessProbe:
             exec:
-              command: ["/bin/sh","-c", "curl $(hostname -i):50070" ]
+              command:
+                - /bin/sh
+                - -ce
+                - curl -G --silent --fail $(hostname -i):50070 && hdfs haadmin -getAllServiceState | grep $MY_POD | awk '{print $2}' | grep -E '^(active|standby)$' | xargs -I {} kubectl label pod --overwrite $MY_POD status={}
             initialDelaySeconds: 60
-            periodSeconds: 30
+            periodSeconds: 10
           resources:
 {{ toYaml .Values.resources | indent 12 }}
           volumeMounts:

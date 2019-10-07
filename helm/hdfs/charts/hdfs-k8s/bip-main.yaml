@@ -1,4 +1,4 @@
 global:
-# Place hdfs directory in a place where gke allows write permissions /hdfs-data doesn't work unless created manually 
+  # Place hdfs directory in a place where gke allows write permissions /hdfs-data doesn't work unless created manually
   dataNodeHostPath:
     - /tmp/hdfs-data

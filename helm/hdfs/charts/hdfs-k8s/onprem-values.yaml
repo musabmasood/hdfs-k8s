@@ -1,70 +1,48 @@
-
-hdfs-client-k8s:
-  image:
-    repository: docker.registry:5000/gcr.io/byond-infinity-platform/integrity-hdfs
-    tag: 2.9.2
-hdfs-datanode-k8s:     
+hdfs-datanode-k8s:
   javaResources:
     #xms and xmx in mb
     xms: 128
     xmx: 5120
   resources:
     limits:
-     cpu: 1
-     memory: 6G
+      cpu: 1
+      memory: 6G
     requests:
-     cpu: 500m
-     memory: 6G
-  image:
-    repository: docker.registry:5000/gcr.io/byond-infinity-platform/integrity-hdfs-datanode
-    tag: 2.9.2
+      cpu: 500m
+      memory: 6G
+
 hdfs-journalnode-k8s:
-  image:
-    repository: docker.registry:5000/gcr.io/byond-infinity-platform/integrity-hdfs-namenode
-    tag: 2.9.2
-  initContainers:
-    repository: docker.registry:5000/busybox
-    tag: 1.27.1
   resources:
     limits:
-     cpu: 1
-     memory: 1Gi
+      cpu: 1
+      memory: 1Gi
     requests:
-     cpu: 500m
-     memory: 600Mi
+      cpu: 500m
+      memory: 600Mi
+
 hdfs-namenode-k8s:
   javaResources:
     #xms and xmx in mb
     xms: 128
     xmx: 3096
-  resources: 
-    limits:
-     cpu: 1
-     memory: 4G
-    requests:
-     cpu: 500m
-     memory: 4G
-  image:
-    repository: docker.registry:5000/gcr.io/byond-infinity-platform/integrity-hdfs-namenode
-    tag: 2.9.2
-zookeeper:
-  image:
-    repository: docker.registry:5000/gcr.io/google_samples/k8szk
-    tag: v3
   resources:
     limits:
-     cpu: 1
-     memory: 4Gi
+      cpu: 1
+      memory: 4G
     requests:
-     cpu: 500m
-     memory: 2Gi
-hdfs-gateway:
-  image:
-    repository: docker.registry:5000/gcr.io/byond-infinity-platform/minio-gateway
-    tag: 1.0
+      cpu: 500m
+      memory: 4G
+
+zookeeper:
+  resources:
+    limits:
+      cpu: 1
+      memory: 4Gi
+    requests:
+      cpu: 500m
+      memory: 2Gi
+
 global:
-# Where on the local FS where hdfs data will be stored
+  # Where on the local FS where hdfs data will be stored
   dataNodeHostPath:
     - /hadoop-data
-
-     
