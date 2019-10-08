@@ -1,0 +1,17 @@
+{{- $self := . -}}
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: auth-credentials
+data:
+  userList.js: |-
+    var userList = [
+      {{ range $i, $user := .Values.readonlyCredentials -}}
+      {
+        username: {{ $user.username | b64enc | quote }},
+        password: {{ $user.password | b64enc | quote }}
+      },
+      {{- end }}
+    ];
+    export default userList;

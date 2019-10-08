@@ -27,7 +27,7 @@ hdfs-config-k8s:
       # hadoop.http.authentication.type: kerberos
      hdfsSite:
        dfs.permissions.enabled: false
-       dfs.webhdfs.enabled: false
+       dfs.webhdfs.enabled: true
 
 
 ## ------------------------------------------------------------------------------
@@ -102,6 +102,10 @@ hdfs-namenode-k8s:
 
     size: 100Gi
 
+  readonlyCredentials:
+    - username: readonly
+      password: readonly123
+    
   ## Whether or not to use hostNetwork in namenode pods. Disabling this will break
   ## data locality as namenode will see pod virtual IPs and fails to equate them with
   ## cluster node physical IPs associated with data nodes.
