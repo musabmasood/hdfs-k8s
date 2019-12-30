@@ -35,6 +35,7 @@ function _helm_diff_and_install () {
   local gold=$1
   shift
   echo Running: helm install --dry-run --debug "$@"
+  [ -d "${_TEST_DIR}/tmp" ] || mkdir -p "${_TEST_DIR}/tmp"
   local tmpfile=$(mktemp ${_TEST_DIR}/tmp/helm-dry-run.XXXXXX)
   (helm install --dry-run --debug "$@" |  \
       grep -v -e "^RELEASED" -e "^\[debug\]") > $tmpfile
