@@ -1,5 +1,5 @@
 ARG HADOOP_VERSION=2.9.2
-FROM integrity-hdfs:${HADOOP_VERSION}
+FROM gcr.io/byond-infinity-platform/integrity-hdfs:${HADOOP_VERSION}
 
 ENV HDFS_CONF_dfs_namenode_name_dir=file:///hadoop/dfs/name
 RUN mkdir -p /hadoop/dfs/name \
