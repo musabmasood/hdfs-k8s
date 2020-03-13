@@ -5,6 +5,14 @@ zookeeper:
   image:
     repository: gcr.io/google_samples/k8szk
     tag: v3
+
+  # Override command to fix zkGenConfig.sh issue in the docker image. 
+  # ref: https://github.com/kubernetes-retired/contrib/issues/2896
+  command:
+    - /bin/bash
+    - -xec
+    - sed -i 's/purgeInteval/purgeInterval/g' /opt/zookeeper/bin/zkGenConfig.sh && zkGenConfig.sh && exec zkServer.sh start-foreground
+
   ## Configure Zookeeper resource requests and limits
   ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
   resources: {}
