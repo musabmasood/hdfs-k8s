@@ -1,6 +1,6 @@
 dependencies:
   - name: zookeeper
-    version: "1.0.0" #NORETAG_HINT
+    version: "1.3.3" #NORETAG_HINT
     repository: https://kubernetes-charts-incubator.storage.googleapis.com/
     condition: condition.subchart.zookeeper
     tags:

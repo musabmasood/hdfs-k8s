@@ -3,7 +3,7 @@
 ## ------------------------------------------------------------------------------
 zookeeper:
   image:
-    repository: gcr.io/google_samples/k8szk 
+    repository: gcr.io/google_samples/k8szk
     tag: v3
   ## Configure Zookeeper resource requests and limits
   ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
@@ -12,6 +12,8 @@ zookeeper:
   ## The JVM heap size to allocate to Zookeeper
   env:
     ZK_HEAP_SIZE: 1G
+    ZK_PURGE_INTERVAL: 24
+    ZK_SNAP_RETAIN_COUNT: 3
 
   ## The number of zookeeper server to have in the quorum.
   replicaCount: 3
@@ -68,7 +70,7 @@ hdfs-journalnode-k8s:
 hdfs-namenode-k8s:
   image:
     repository: gcr.io/byond-infinity-platform/integrity-hdfs-namenode
-    tag: "2.9.2-fix.4"
+    tag: "2.9.2-fix.5"
   ## Name of the namenode start script in the config map.
   namenodeStartScript: format-and-run.sh
 
@@ -105,7 +107,7 @@ hdfs-namenode-k8s:
   readonlyCredentials:
     - username: readonly
       password: readonly123
-    
+
   ## Whether or not to use hostNetwork in namenode pods. Disabling this will break
   ## data locality as namenode will see pod virtual IPs and fails to equate them with
   ## cluster node physical IPs associated with data nodes.
@@ -123,8 +125,8 @@ hdfs-namenode-k8s:
   resources: {}
   # If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # if you want un bound resources then add the curly brace after resources like 'resources: {}' 
-  # and uncomment everything below 
+  # if you want un bound resources then add the curly brace after resources like 'resources: {}'
+  # and uncomment everything below
     # limits:
      # cpu: 2
      # memory: 2G
@@ -171,8 +173,8 @@ hdfs-datanode-k8s:
   resources: {}
   # If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # if you want un bound resources then add the curly brace after resources like 'resources: {}' 
-  # and uncomment everything below 
+  # if you want un bound resources then add the curly brace after resources like 'resources: {}'
+  # and uncomment everything below
     # limits:
      # cpu: 2
      # memory: 2G
@@ -191,14 +193,14 @@ hdfs-gateway:
     tag: "1.0"
   initContainers:
     repository: busybox
-    tag: "1.31.0"    
+    tag: "1.31.0"
   accessKey: "admin"
   secretKey: "admin123"
-  resources: 
+  resources:
   # If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # if you want un bound resources then add the curly brace after resources like 'resources: {}' 
-  # and uncomment everything below 
+  # if you want un bound resources then add the curly brace after resources like 'resources: {}'
+  # and uncomment everything below
     limits:
      cpu: 1
      memory: 1G
